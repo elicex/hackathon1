@@ -1,0 +1,4 @@
+.env
+.DS_Store
+virtual_env/
+__pycache__
