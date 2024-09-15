@@ -3,22 +3,19 @@ from dotenv import load_dotenv
 import psycopg2
 import requests
 
-load_dotenv()
+
+load_dotenv(dotenv_path='/Users/elicesheidin/hackathon1/.env')
 
 print("Welcome to the Recipe Generator that helps you prepare the perfect meal using the ingredients you have at home ")
 
 user_name = input("Please Tell Us What Is Your Name\n").lower()
 
-db_password = os.getenv("DB_PASSWORD")
-
-if not db_password:
-    print("Error: DB_PASSWORD environment variable is not set.")
-    exit(1)
-
 conn = psycopg2.connect(
-    host="localhost",
-    database="smart_recipe_db",
-    user="postgres",
+    host=os.getenv("DB_HOST"),
+    database=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD") or None,  # Set to None if blank
+    port=os.getenv("DB_PORT")
 )
 
 cur = conn.cursor()
