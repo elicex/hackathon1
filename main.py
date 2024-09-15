@@ -3,14 +3,12 @@ from dotenv import load_dotenv
 import psycopg2
 import requests
 
-# Load environment variables from .env file
 load_dotenv()
 
 print("Welcome to the Recipe Generator that helps you prepare the perfect meal using the ingredients you have at home ")
 
 user_name = input("Please Tell Us What Is Your Name\n").lower()
 
-# Fetch password from environment variable
 db_password = os.getenv("DB_PASSWORD")
 
 if not db_password:
@@ -30,7 +28,6 @@ cur.execute("SELECT name FROM Users WHERE name = %s", (user_name,))
 user = cur.fetchone()
 if user:
     print(f" Welcome back, {user[0]}!")
-    # Check if user wants to update ingredients
     has_new_ingredients = input("Do you have any new ingredients? Or would you like to proceed with what you already had? Answer with yes/no: ")
     if has_new_ingredients.lower() == "yes":
         new_ingredients = input("Great! Give me an updated list, separated by commas: ")
@@ -64,7 +61,7 @@ cur.execute("""
 users_ingredients = cur.fetchone()
 
 if users_ingredients:
-    ingredients_query = users_ingredients[0].replace(" ", "")  # Access the first element of the tuple and remove spaces
+    ingredients_query = users_ingredients[0].replace(" ", "")  
 
 url = f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={ingredients_query}&number=5&apiKey={SPOONS_API_KEY}"
 response = requests.get(url)
@@ -72,7 +69,7 @@ missing_ingredients = int(input("How many missing ingredients are acceptable? ")
 
 if response.status_code == 200:
     recipes = response.json()
-    filtered_recipes = [recipe for recipe in recipes if recipe['missedIngredientCount'] <= missing_ingredients]  # Filter recipes
+    filtered_recipes = [recipe for recipe in recipes if recipe['missedIngredientCount'] <= missing_ingredients]  
     if filtered_recipes:
         print("\nHere are some recipes you can make with your ingredients:\n")
         for i, recipe in enumerate(filtered_recipes, 1):
