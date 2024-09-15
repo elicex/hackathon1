@@ -19,10 +19,8 @@ if not db_password:
 
 conn = psycopg2.connect(
     host="localhost",
-    port=5433,  # Assuming your PostgreSQL is running on port 5433
     database="smart_recipe_db",
     user="postgres",
-    password=db_password  # Use password from environment variable
 )
 
 cur = conn.cursor()
